@@ -1,0 +1,7 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/nikoskon2003/ChestVault
+branches:
+- master
+projects:
+  ChestVault:
+    path: ""
+...
