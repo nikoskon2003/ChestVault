@@ -1,10 +1,10 @@
 author: nikoskon
 name: VaultChest
 description: A Vault plugin
-version: 1.0.0
+version: 1.0.1
 
 main: VaultChest\Main
-api: 3.0.0-ALPHA5
+api: [3.0.0]
 load: POSTWORLD
 
 permissions:
