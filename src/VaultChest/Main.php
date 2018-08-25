@@ -109,7 +109,7 @@ class Main extends PluginBase implements Listener
 
         $this->chests = [];
         if ($cf["settings"]["particles"]) {
-            $this->$Plugin->getScheduler()->scheduleRepeatingTask(
+            $this->getScheduler()->scheduleRepeatingTask(
                 new ParticleTask($this),
                 $cf["settings"]["p-ticks"]);
         }
