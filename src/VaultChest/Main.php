@@ -25,7 +25,6 @@ use pocketmine\event\inventory\InventoryCloseEvent;
 use pocketmine\event\inventory\InventoryOpenEvent;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
-use pocketmine\scheduler\CallbackTask;
 
 use VaultChest\mc;
 
@@ -41,7 +40,7 @@ use VaultChest\mc;
 //- InventoryCloseEvent;
 
 
-//
+//use pocketmine\scheduler\CallbackTask;
 //use pocketmine\level\Level;
 //use pocketmine\event\entity\EntityLevelChangeEvent;
 //use pocketmine\block\Block;
@@ -110,7 +109,7 @@ class Main extends PluginBase implements Listener
 
         $this->chests = [];
         if ($cf["settings"]["particles"]) {
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(
+            $this->$pluginMainClass->getScheduler()->scheduleRepeatingTask(
                 new ParticleTask($this),
                 $cf["settings"]["p-ticks"]);
         }
