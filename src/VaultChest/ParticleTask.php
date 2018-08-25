@@ -17,7 +17,7 @@ class ParticleTask extends Task{
 								 self::randy($center->getZ(),2,-0.5));
 	}
 	public function onRun($currentTick){
-		if ($this->$owner->isDisabled()) return;
+		if ($this->isDisabled()) return;
 		foreach ($this->owner->getServer()->getLevels() as $lv) {
 			foreach ($lv->getTiles() as $tile) {
 				if (!($tile instanceof Chest)) continue;
