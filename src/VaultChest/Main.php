@@ -85,10 +85,10 @@ class Main extends PluginBase implements Listener
             "settings" => [
                 "# global" => "If true all worlds share the same VaultChest",
                 "global" => false,
-                "# particles" => "Decorate VaultChest...",
-                "particles" => true,
-                "# p-ticks" => "Particle ticks",
-                "p-ticks" => 20,
+                //"# particles" => "Decorate VaultChest...",
+                //"particles" => true,
+                //"# p-ticks" => "Particle ticks",
+                //"p-ticks" => 20,
                 "# base-block" => "Block to use for the base",
                 "base-block" => "BEDROCK",
             ]
@@ -108,10 +108,10 @@ class Main extends PluginBase implements Listener
         }
 
         $this->chests = [];
-        if ($cf["settings"]["particles"]) {
-            $this->getScheduler()->scheduleRepeatingTask(
-                new ParticleTask($this),
-                $cf["settings"]["p-ticks"]);
+        //if ($cf["settings"]["particles"]) {
+            //$this->getScheduler()->scheduleRepeatingTask(
+                //new ParticleTask($this),
+                //$cf["settings"]["p-ticks"]);
         }
     }
 
