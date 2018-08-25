@@ -112,7 +112,7 @@ class Main extends PluginBase implements Listener
             //$this->getScheduler()->scheduleRepeatingTask(
                 //new ParticleTask($this),
                 //$cf["settings"]["p-ticks"]);
-        }
+        //}
     }
 
     private function saveInventory(Player $player, Inventory $inv)
