@@ -25,6 +25,7 @@ use pocketmine\event\inventory\InventoryCloseEvent;
 use pocketmine\event\inventory\InventoryOpenEvent;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\scheduler\CallbackTask;
 
 use VaultChest\mc;
 
@@ -46,7 +47,6 @@ use VaultChest\mc;
 //use pocketmine\block\Block;
 //use pocketmine\Server;
 //use pocketmine\utils\TextFormat;
-//use pocketmine\scheduler\CallbackTask;
 
 
 class Main extends PluginBase implements Listener
