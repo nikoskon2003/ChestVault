@@ -1,13 +1,13 @@
 <?php
 namespace VaultChest;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\plugin\PluginBase;
 use pocketmine\tile\Chest;
 use pocketmine\level\particle\SmokeParticle;
 use pocketmine\math\Vector3;
 
 
-class ParticleTask extends PluginTask{
+class ParticleTask extends Task{
 	protected static function randy($p,$r,$o) {
 		return $p+(mt_rand()/mt_getrandmax())*$r+$o;
 	}
