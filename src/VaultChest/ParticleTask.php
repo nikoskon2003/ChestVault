@@ -5,9 +5,15 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\tile\Chest;
 use pocketmine\level\particle\SmokeParticle;
 use pocketmine\math\Vector3;
-use pocketmine\Server;
 
 class ParticleTask extends Task{
+
+	/** @var Main */
+	private $owner;
+	public function __construct(Main $main){
+		$this->owner = $main;
+	}
+
 	protected static function randy($p,$r,$o) {
 		return $p+(mt_rand()/mt_getrandmax())*$r+$o;
 	}
@@ -17,7 +23,8 @@ class ParticleTask extends Task{
 								 self::randy($center->getZ(),2,-0.5));
 	}
 	public function onRun($currentTick){
-		foreach ($this->getServer()->getLevels() as $lv) {
+		if($this->owner->isDisabled()) return;
+		foreach ($this->owner->getServer()->getLevels() as $lv) {
 			foreach ($lv->getTiles() as $tile) {
 				if (!($tile instanceof Chest)) continue;
 				if (!($this->owner->isVChest($tile->getInventory()))) continue;

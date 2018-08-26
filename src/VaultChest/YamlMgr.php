@@ -3,11 +3,13 @@
 namespace VaultChest;
 
 use pocketmine\item\enchantment\Enchantment;
+use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Player;
 use pocketmine\inventory\Inventory;
 use pocketmine\utils\Config;
 use pocketmine\item\Item;
+use pocketmine\utils\TextFormat;
 
 class YamlMgr implements DatabaseManager
 {
@@ -97,7 +99,12 @@ class YamlMgr implements DatabaseManager
                 foreach ($t['ench'] as $enc)
                 {
                     $a = explode(":", $enc);
-                    $item->addEnchantment(Enchantment::getEnchantment((int)$a[0])->setLevel((int)$a[1]));
+
+                    $enchantment = Enchantment::getEnchantment((int)$a[0]);
+                    $enchantment = new EnchantmentInstance($enchantment);
+                    $enchantment->setLevel((int)$a[1]);
+
+                    $item->addEnchantment($enchantment);
                 }
             }
             $inv->setItem($slot, $item);

@@ -85,10 +85,10 @@ class Main extends PluginBase implements Listener
             "settings" => [
                 "# global" => "If true all worlds share the same VaultChest",
                 "global" => false,
-                //"# particles" => "Decorate VaultChest...",
-                //"particles" => true,
-                //"# p-ticks" => "Particle ticks",
-                //"p-ticks" => 20,
+                "# particles" => "Decorate VaultChest...",
+                "particles" => true,
+                "# p-ticks" => "Particle ticks",
+                "p-ticks" => 20,
                 "# base-block" => "Block to use for the base",
                 "base-block" => "BEDROCK",
             ]
@@ -102,17 +102,17 @@ class Main extends PluginBase implements Listener
         $bl = Item::fromString($cf["settings"]["base-block"]);
         if ($bl->getBlock()->getId() == Item::AIR) {
             $this->getLogger()->warning(mc::_("Invalid base-block %1%", $cf["settings"]["base-block"]));
-            $this->base_block = Block::NETHERRACK;
+            $this->base_block = Block::BEDROCK;
         } else {
             $this->base_block = $bl->getBlock()->getId();
         }
 
         $this->chests = [];
-        //if ($cf["settings"]["particles"]) {
-            //$this->getScheduler()->scheduleRepeatingTask(
-                //new ParticleTask($this),
-                //$cf["settings"]["p-ticks"]);
-        //}
+        if ($cf["settings"]["particles"]) {
+            $this->getScheduler()->scheduleRepeatingTask(
+                new ParticleTask($this),
+                $cf["settings"]["p-ticks"]);
+        }
     }
 
     private function saveInventory(Player $player, Inventory $inv)
