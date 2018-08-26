@@ -93,7 +93,7 @@ class YamlMgr implements DatabaseManager
         $inv->clearAll();
         foreach ($yaml[$ln] as $slot => $t) {
             list($id, $dam, $cnt, $nm) = explode(":", $t['item']);
-            $item = Item::get((int)$id, (int)$dam, (int)$cnt)->setCustomName($nm);
+            $item = Item::get((int)$id, (int)$dam, (int)$cnt)->setCustomName("§r".$nm);
             if(!empty($t['ench'][0]))
             {
                 foreach ($t['ench'] as $enc)
