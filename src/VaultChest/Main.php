@@ -40,14 +40,6 @@ use VaultChest\mc;
 //- InventoryCloseEvent;
 
 
-//use pocketmine\scheduler\CallbackTask;
-//use pocketmine\level\Level;
-//use pocketmine\event\entity\EntityLevelChangeEvent;
-//use pocketmine\block\Block;
-//use pocketmine\Server;
-//use pocketmine\utils\TextFormat;
-
-
 class Main extends PluginBase implements Listener
 {
     protected $chests;    // Array with active chests
@@ -83,7 +75,7 @@ class Main extends PluginBase implements Listener
             "version" => $this->getDescription()->getVersion(),
             "# settings" => "Configuration settings",
             "settings" => [
-                "# global" => "If true all worlds share the same VaultChest",
+                "# global" => "If true all worlds share the same VaultChest. Changing this value may cause item loss!",
                 "global" => false,
                 "# particles" => "Decorate VaultChest...",
                 "particles" => true,
@@ -93,11 +85,8 @@ class Main extends PluginBase implements Listener
                 "base-block" => "BEDROCK",
             ]
         ];
-        $cf = (new Config($this->getDataFolder() . "config.yml",
-            Config::YAML, $defaults))->getAll();
-        //$backend = __NAMESPACE__ . "\\" . $cf["backend"];
+        $cf = (new Config($this->getDataFolder() . "config.yml", Config::YAML, $defaults))->getAll();
         $this->dbm = new YamlMgr($this, $cf);
-        //$this->getLogger()->info(mc::_("Using %1% as backend", $cf["backend"]));
 
         $bl = Item::fromString($cf["settings"]["base-block"]);
         if ($bl->getBlock()->getId() == Item::AIR) {
@@ -159,7 +148,7 @@ class Main extends PluginBase implements Listener
         if ($ev->isCancelled()) return;
         $bl = $ev->getBlock();
         if ($bl->getId() != Block::CHEST || $bl->getSide(Vector3::SIDE_DOWN)->getId() != $this->base_block) return;
-        $ev->getPlayer()->sendMessage(mc::_("Placed a VaultChest"));
+        $ev->getPlayer()->sendTip(mc::_("Placed a VaultChest"));
     }
 
     public function onBlockBreakEvent(BlockBreakEvent $ev)
@@ -207,7 +196,7 @@ class Main extends PluginBase implements Listener
         $inv = $ev->getInventory();
         if (!$this->isVChest($inv)) return;
         if ($this->unlockChest($player, $inv)) {
-            $player->sendMessage(mc::_("Closing VaultChest!"));
+            $player->sendTip(mc::_("Closing VaultChest!"));
             $this->saveInventory($player, $inv);
         }
     }
@@ -223,7 +212,7 @@ class Main extends PluginBase implements Listener
             $ev->setCancelled();
             return;
         }
-        $player->sendMessage(mc::_("Opening VaultChest!"));
+        $player->sendTip(mc::_("Opening VaultChest!"));
         $this->loadInventory($player, $inv);
     }
 

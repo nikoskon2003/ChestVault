@@ -42,35 +42,11 @@ class YamlMgr implements DatabaseManager
         else
             $ln = trim(strtolower($player->getLevel()->getName()));
 
-        $yaml[$ln] = [];
-
-        foreach ($inv->getContents() as $slot => &$item) {
-            $name = $item->getName();
-            if($item->hasCustomName())
-            {
-                $name = $item->getCustomName();
-            }
-            $ench = [];
-            if($item->hasEnchantments())
-            {
-                foreach ($item->getEnchantments() as $enc)
-                {
-                    $id = $enc->getId();
-                    $level = $enc->getLevel();
-                    $enc = implode([(string)$id, (string)$level], ":");
-                    array_push($ench, $enc);
-                }
-            }
-            $yaml[$ln][$slot]['item'] = implode(":", [$item->getId(),
-                $item->getDamage(),
-                $item->getCount(), $name]);
-            $yaml[$ln][$slot]['ench'] = $ench;
-        }
+        $yaml[$ln] = bin2hex(serialize($inv->getContents()));
         $inv->clearAll();
         $cfg->setAll($yaml);
         $cfg->save();
         return true;
-
     }
 
     public function loadInventory(Player $player, Inventory $inv)
@@ -88,26 +64,39 @@ class YamlMgr implements DatabaseManager
         else
             $ln = trim(strtolower($player->getLevel()->getName()));
 
+        $inv->clearAll();
         if (!isset($yaml[$ln])) return false;
 
-        $inv->clearAll();
-        foreach ($yaml[$ln] as $slot => $t) {
-            list($id, $dam, $cnt, $nm) = explode(":", $t['item']);
-            $item = Item::get((int)$id, (int)$dam, (int)$cnt)->setCustomName("§r".$nm);
-            if(!empty($t['ench'][0]))
-            {
-                foreach ($t['ench'] as $enc)
+        if(is_array($yaml[$ln])) //compatibility with older versions
+        {
+            foreach ($yaml[$ln] as $slot => $t) {
+                list($id, $dam, $cnt, $nm) = explode(":", $t['item']);
+                $item = Item::get((int)$id, (int)$dam, (int)$cnt);
+    
+                if($item->getName() !== $nm)
+                    $item->setCustomName($nm);
+    
+                if(!empty($t['ench'][0]))
                 {
-                    $a = explode(":", $enc);
-
-                    $enchantment = Enchantment::getEnchantment((int)$a[0]);
-                    $enchantment = new EnchantmentInstance($enchantment);
-                    $enchantment->setLevel((int)$a[1]);
-
-                    $item->addEnchantment($enchantment);
+                    foreach ($t['ench'] as $enc)
+                    {
+                        $a = explode(":", $enc);
+    
+                        $enchantment = Enchantment::getEnchantment((int)$a[0]);
+                        $enchantment = new EnchantmentInstance($enchantment);
+                        $enchantment->setLevel((int)$a[1]);
+    
+                        $item->addEnchantment($enchantment);
+                    }
                 }
+                $inv->setItem($slot, $item);
             }
-            $inv->setItem($slot, $item);
+        }
+        else
+        {
+            $items = unserialize(hex2bin($yaml[$ln]));
+            if($items === false) return false;
+            $inv->setContents($items);
         }
         return true;
     }
